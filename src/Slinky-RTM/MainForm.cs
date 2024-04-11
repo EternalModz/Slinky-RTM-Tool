@@ -828,14 +828,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x004FCBA8, new byte[8]
                 {
-                    0x3F, 0x00, 0x00, 0x00, 0x3D, 0x4C, 0xCC, 0xCD
+                    0x3F, 0x80, 0x00, 0x00, 0x3D, 0x4C, 0xCC, 0xCD
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x004FCBA8, new byte[8]
                 {
-                    0x3F, 0x80, 0x00, 0x00, 0x3D, 0x4C, 0xCC, 0xCD
+                    0x3F, 0x00, 0x00, 0x00, 0x3D, 0x4C, 0xCC, 0xCD
                 });
             }
         }
@@ -1199,14 +1199,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0007F194, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0007F194, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1217,14 +1217,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0007FD48, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0007FD48, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1235,14 +1235,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x00224338, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x00224338, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1253,14 +1253,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0029B0D4, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0029B0D4, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1271,14 +1271,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0029B724, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0029B724, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1307,14 +1307,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x006BCD3C, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x006BCD3C, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1325,14 +1325,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A0B48, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A0B48, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1361,14 +1361,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A1164, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A1164, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
         }
@@ -1397,14 +1397,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0121E9E0, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0121E9E0, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1433,14 +1433,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A1878, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A1878, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1451,14 +1451,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A0D3C, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A0D3C, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1469,14 +1469,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A0C94, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A0C94, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1487,14 +1487,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A0B48, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A0B48, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1505,14 +1505,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A0B34, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A0B34, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1523,14 +1523,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0089F094, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0089F094, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1541,14 +1541,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x0089E6C4, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x0089E6C4, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1559,14 +1559,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x006F70F4, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x006F70F4, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1577,14 +1577,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x006F32A0, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x006F32A0, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1595,14 +1595,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x011C8828, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x011C8828, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
         }
@@ -1613,14 +1613,14 @@ namespace Slinky_RTM
             {
                 PS3.Extension.WriteBytes(0x008A26D0, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3F, 0x80, 0x00, 0x00
                 });
             }
             else
             {
                 PS3.Extension.WriteBytes(0x008A26D0, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3F, 0x00, 0x00, 0x00
                 });
             }
         }
@@ -1647,7 +1647,7 @@ namespace Slinky_RTM
         #region Messages
         private void AboutBtn_Click(object sender, EventArgs e)
         {
-            string message = ("Slinky RTM Tool\n\nThe Slinky RTM Tool is a powerful real-time modding / real-time editing tool made for Minecraft PS3 Edition versions 1.20 - 1.28. The tool is open-source and can be found on GitHub.\n\nTool version: 1.1.0 (Build #11000B)\n\nCredits:\nDeveloper: EternalModz\nHelper: MayhemModding\nHelper: LordVirus (Trent)\nOffset Credits: SirJakey\nOffset Credits: Eddie Mac / NeverSwitchUp\n\nTool created for: Seve");
+            string message = ("Slinky RTM Tool\n\nThe Slinky RTM Tool is a powerful real-time modding / real-time editing tool made for Minecraft PS3 Edition versions 1.20 - 1.28. The tool is open-source and can be found on GitHub.\n\nTool version: 1.2.0 (Build #12000A)\n\nCredits:\nDeveloper: EternalModz\nHelper: MayhemModding\nHelper: LordVirus (Trent)\nOffset Credits: SirJakey\nOffset Credits: Eddie Mac / NeverSwitchUp\n\nTool created for: Seve");
             MessageBox.Show(message, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1699,6 +1699,13 @@ namespace Slinky_RTM
 
             // Mark the link as visited
             SocialsLinkLbl.LinkVisited = true;
+        }
+        #endregion
+
+        #region Misc
+        private void toolStripStatusLabel3_Click(object sender, EventArgs e)
+        {
+
         }
         #endregion
     }

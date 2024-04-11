@@ -59,6 +59,7 @@
             this.TimeOfDayComboBox = new System.Windows.Forms.ComboBox();
             this.AlwaysSprintingCBox = new System.Windows.Forms.CheckBox();
             this.BackgroundPanel = new System.Windows.Forms.Panel();
+            this.ReadyCBox = new System.Windows.Forms.CheckBox();
             this.SocialsLinkLbl = new System.Windows.Forms.LinkLabel();
             this.YouTubeLinkLbl = new System.Windows.Forms.LinkLabel();
             this.ConnectBtn = new CBH.Ultimate.Controls.CrEaTiiOn_Ultimate_GradientButton();
@@ -107,7 +108,6 @@
             this.PowerHitCBox = new System.Windows.Forms.CheckBox();
             this.EditorModsPage = new System.Windows.Forms.TabPage();
             this.HowToUseCBoxsBtn = new CBH.Ultimate.Controls.CrEaTiiOn_Ultimate_GradientButton();
-            this.ReadyCBox = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             this.BackgroundPanel.SuspendLayout();
             this.ModTabControl.SuspendLayout();
@@ -230,9 +230,10 @@
             this.toolStripStatusLabel3.ActiveLinkColor = System.Drawing.Color.White;
             this.toolStripStatusLabel3.LinkColor = System.Drawing.Color.White;
             this.toolStripStatusLabel3.Name = "toolStripStatusLabel3";
-            this.toolStripStatusLabel3.Size = new System.Drawing.Size(130, 17);
-            this.toolStripStatusLabel3.Text = "Version: 1.1.0 (#11000B)";
+            this.toolStripStatusLabel3.Size = new System.Drawing.Size(131, 17);
+            this.toolStripStatusLabel3.Text = "Version: 1.2.0 (#12000A)";
             this.toolStripStatusLabel3.VisitedLinkColor = System.Drawing.Color.White;
+            this.toolStripStatusLabel3.Click += new System.EventHandler(this.toolStripStatusLabel3_Click);
             // 
             // SuperSpeedCBox
             // 
@@ -266,7 +267,7 @@
             this.BrightAtNightCBox.Name = "BrightAtNightCBox";
             this.BrightAtNightCBox.Size = new System.Drawing.Size(118, 22);
             this.BrightAtNightCBox.TabIndex = 44;
-            this.BrightAtNightCBox.Text = "Brgiht At Night";
+            this.BrightAtNightCBox.Text = "Bright At Night";
             this.BrightAtNightCBox.UseVisualStyleBackColor = true;
             this.BrightAtNightCBox.CheckedChanged += new System.EventHandler(this.BrightAtNightCBox_CheckedChanged);
             // 
@@ -601,6 +602,18 @@
             this.BackgroundPanel.Name = "BackgroundPanel";
             this.BackgroundPanel.Size = new System.Drawing.Size(414, 677);
             this.BackgroundPanel.TabIndex = 27;
+            // 
+            // ReadyCBox
+            // 
+            this.ReadyCBox.AutoSize = true;
+            this.ReadyCBox.Location = new System.Drawing.Point(267, 261);
+            this.ReadyCBox.Margin = new System.Windows.Forms.Padding(4);
+            this.ReadyCBox.Name = "ReadyCBox";
+            this.ReadyCBox.Size = new System.Drawing.Size(65, 22);
+            this.ReadyCBox.TabIndex = 33;
+            this.ReadyCBox.Text = "Ready";
+            this.ReadyCBox.UseVisualStyleBackColor = true;
+            this.ReadyCBox.CheckedChanged += new System.EventHandler(this.ReadyCBox_CheckedChanged);
             // 
             // SocialsLinkLbl
             // 
@@ -1262,7 +1275,7 @@
             this.EditorModsPage.Location = new System.Drawing.Point(140, 4);
             this.EditorModsPage.Name = "EditorModsPage";
             this.EditorModsPage.Padding = new System.Windows.Forms.Padding(3);
-            this.EditorModsPage.Size = new System.Drawing.Size(656, 665);
+            this.EditorModsPage.Size = new System.Drawing.Size(656, 669);
             this.EditorModsPage.TabIndex = 1;
             this.EditorModsPage.Text = "Editors";
             // 
@@ -1291,18 +1304,6 @@
             this.HowToUseCBoxsBtn.TextColor = System.Drawing.Color.White;
             this.HowToUseCBoxsBtn.UseVisualStyleBackColor = false;
             this.HowToUseCBoxsBtn.Click += new System.EventHandler(this.HowToUseCBoxsBtn_Click);
-            // 
-            // ReadyCBox
-            // 
-            this.ReadyCBox.AutoSize = true;
-            this.ReadyCBox.Location = new System.Drawing.Point(267, 261);
-            this.ReadyCBox.Margin = new System.Windows.Forms.Padding(4);
-            this.ReadyCBox.Name = "ReadyCBox";
-            this.ReadyCBox.Size = new System.Drawing.Size(65, 22);
-            this.ReadyCBox.TabIndex = 33;
-            this.ReadyCBox.Text = "Ready";
-            this.ReadyCBox.UseVisualStyleBackColor = true;
-            this.ReadyCBox.CheckedChanged += new System.EventHandler(this.ReadyCBox_CheckedChanged);
             // 
             // MainForm
             // 
