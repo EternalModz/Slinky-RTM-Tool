@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Slinky_RTM;
 
-namespace Slinky_RTM
+namespace Slinky_RTM.UI
 {
     internal static class Program
     {

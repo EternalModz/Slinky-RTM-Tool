@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Dark.Net;
 
-namespace Slinky_RTM
+namespace Slinky_RTM.UI
 {
     public class AdaptiveForm : Form
     {

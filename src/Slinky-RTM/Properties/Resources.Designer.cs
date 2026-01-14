@@ -101,22 +101,22 @@ namespace Slinky_RTM.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon SlinkyIcon {
-            get {
-                object obj = ResourceManager.GetObject("SlinkyIcon", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap SlinkyLogo {
             get {
                 object obj = ResourceManager.GetObject("SlinkyLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon SlinkyUltramarineIcon {
+            get {
+                object obj = ResourceManager.GetObject("SlinkyUltramarineIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

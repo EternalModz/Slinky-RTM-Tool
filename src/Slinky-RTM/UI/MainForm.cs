@@ -5,21 +5,238 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
 
-namespace Slinky_RTM
+namespace Slinky_RTM.UI
 {
-    public partial class MainForm : AdaptiveForm
+    public partial class MainForm : Form
     {
         public static PS3API PS3 = new PS3API();
         public static PS3ManagerAPI.PS3MAPI PS3M_API = new PS3ManagerAPI.PS3MAPI();
         private bool IsConnected = false;
 
-        #region Setting Things Up
+        #region Setup
         public MainForm()
         {
             InitializeComponent();
-            // Register KeyDown event handler when the form is loaded
             this.KeyPreview = true; // This allows the form to receive key events before the control that has focus
             this.KeyDown += MainForm_KeyDown;
+
+            #region Connection Dropdown Setup
+            // Connection dropdown
+            var connectionDropDown = new ToolStripDropDownButton("Connection");
+
+            // Force a menu-style dropdown so we can remove the image/check margins (no left icon gutter)
+            var connectionMenu = new ToolStripDropDownMenu
+            {
+                ShowImageMargin = false,
+                ShowCheckMargin = false
+            };
+            connectionDropDown.DropDown = connectionMenu;
+
+            // API selector
+            var apiComboBox = new ToolStripComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            apiComboBox.Items.AddRange(new object[]
+                {
+                    "Target Manager API",
+                    "Control Console API",
+                    "PS3 Manager API"
+                });
+
+            apiComboBox.SelectedIndexChanged += (s, e) =>
+            {
+                switch (apiComboBox.SelectedItem.ToString())
+                {
+                    case "Target Manager API":
+                        // Handles TMAPI
+                        PS3.ChangeAPI(SelectAPI.TargetManager);
+                        MessageBox.Show("Target Manager API for DEX PS3 Systems has been selected!");
+                        break;
+                    case "Control Console API":
+                        // Handles CCAPI
+                        PS3.ChangeAPI(SelectAPI.ControlConsole);
+                        MessageBox.Show("Control Console API for CFW PS3 Systems has been selected!");
+                        break;
+                    case "PS3 Manager API":
+                        // Handles PS3 Manager API
+                        PS3.ChangeAPI(SelectAPI.PS3Manager);
+                        MessageBox.Show("PS3 Manager API for HEN PS3 Systems has been selected!");
+                        break;
+                    default:
+                        // N/A
+                        break;
+                }
+            };
+
+            // IP textbox
+            var ipTextBox = new ToolStripTextBox
+            {
+                AutoSize = false,
+                Width = 120,
+                Text = "192.168.1.1"
+            };
+
+            // Connect
+            var connectMenuItem = new ToolStripMenuItem("Connect")
+            {
+                AutoSize = false,
+                Height = 28,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            connectMenuItem.Click += (s, e) =>
+            {
+                if (PS3.GetCurrentAPI() == SelectAPI.ControlConsole)
+                {
+                    try
+                    {
+                        MainForm.PS3.ConnectTarget(ipTextBox.Text);
+                        this.ConnectionStatusLbl.Text = "Connected";
+                        this.ConnectionStatusLbl.ForeColor = Color.Green;
+                        IsConnected = true;
+                    }
+                    catch
+                    {
+                        this.ConnectionStatusLbl.Text = "Not connected";
+                        this.ConnectionStatusLbl.ForeColor = Color.Red;
+                    }
+                }
+                else if (PS3.GetCurrentAPI() == SelectAPI.TargetManager)
+                {
+                    try
+                    {
+                        MainForm.PS3.ConnectTarget();
+                        this.ConnectionStatusLbl.Text = "Connected";
+                        this.ConnectionStatusLbl.ForeColor = Color.Green;
+                        IsConnected = true;
+                    }
+                    catch
+                    {
+                        this.ConnectionStatusLbl.Text = "Not connected";
+                        this.ConnectionStatusLbl.ForeColor = Color.Red;
+                    }
+                }
+                else if (PS3.GetCurrentAPI() == SelectAPI.PS3Manager)
+                {
+                    try
+                    {
+                        PS3M_API.ConnectTarget(ipTextBox.Text, Convert.ToInt32(7887));
+                        if (PS3M_API.IsConnected)
+                            foreach (uint pidProcess in MainForm.PS3M_API.Process.GetPidProcesses())
+                            {
+                                if (pidProcess != 0U)
+                                {
+                                    PS3M_API.Process.GetName(pidProcess);
+                                }
+                            }
+                        this.ConnectionStatusLbl.Text = "Connected";
+                        this.ConnectionStatusLbl.ForeColor = Color.Green;
+                        IsConnected = true;
+                    }
+                    catch
+                    {
+                        this.ConnectionStatusLbl.Text = "Not connected";
+                        this.ConnectionStatusLbl.ForeColor = Color.Red;
+                    }
+                }
+            };
+
+            // Attach
+            var attachMenuItem = new ToolStripMenuItem("Attach")
+            {
+                AutoSize = false,
+                Height = 28,
+                TextAlign = ContentAlignment.MiddleLeft
+            };
+
+            attachMenuItem.Click += (s, e) =>
+            {
+                if (PS3.GetCurrentAPI() == SelectAPI.ControlConsole || PS3.GetCurrentAPI() == SelectAPI.TargetManager)
+                {
+                    try
+                    {
+                        PS3.AttachProcess();
+                        this.ConnectionStatusLbl.Text = "Connected + Attached";
+                        this.ConnectionStatusLbl.ForeColor = Color.Green;
+                    }
+                    catch
+                    {
+                        this.ConnectionStatusLbl.Text = "Not attached";
+                        this.ConnectionStatusLbl.ForeColor = Color.Red;
+                    }
+                }
+                else if (PS3.GetCurrentAPI() == SelectAPI.PS3Manager)
+                {
+                    try
+                    {
+                        MainForm.PS3M_API.AttachProcess(MainForm.PS3M_API.Process.Processes_Pid[0]);
+                        if (MainForm.PS3M_API.IsAttached)
+                        {
+                            //mods
+                            this.ConnectionStatusLbl.Text = "Connected + Attached";
+                            this.ConnectionStatusLbl.ForeColor = Color.Green;
+                        }
+                    }
+                    catch
+                    {
+                        this.ConnectionStatusLbl.Text = "Not attached";
+                        this.ConnectionStatusLbl.ForeColor = Color.Red;
+                    }
+                }
+            };
+
+            // Make items wider in the menu
+            connectionMenu.Opening += (s, e) =>
+            {
+                int w = connectionMenu.ClientSize.Width;
+                connectMenuItem.Width = w;
+                attachMenuItem.Width = w;
+            };
+
+            // Build dropdown
+            connectionMenu.Items.Add(apiComboBox);
+            connectionMenu.Items.Add(new ToolStripSeparator());
+            connectionMenu.Items.Add(ipTextBox);
+            connectionMenu.Items.Add(new ToolStripSeparator());
+            connectionMenu.Items.Add(connectMenuItem);
+            connectionMenu.Items.Add(attachMenuItem);
+
+            // Add to existing ToolStrip
+            MainTStrip.Items.Add(connectionDropDown);
+            #endregion
+
+            #region About Button Setup
+
+            var aboutButton = new ToolStripButton("About"); // About button
+
+            aboutButton.Click += (s, e) => // About info
+            {
+                string message =
+                    "Slinky RTM Tool\n\n" +
+                    "Slinky is an RTM Tool with powerful RTM/RTE capabilities " +
+                    "made for Minecraft PoaySStation 3 Edition versions 1.20-1.28. " +
+                    "This project is open-source and can be found on GitHub.\n\n" +
+                    "Tool version: 2.0.0 (Build #011226A)\n\n" +
+                    "Credits:\n" +
+                    "Slinky RTM Tool developed by EternalModz\n" +
+                    "Flight Reverse Engineering: MayhemModding\n" +
+                    "Flight Configuration: LordVirus (Natasha)\n" +
+                    "Offset Credits: SirJakey\n" +
+                    "Offset Credits: Eddie Mac/NeverSwitchUp\n\n" +
+                    "Created for: Seve";
+
+                MessageBox.Show(
+                    message,
+                    "About",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
+            };
+
+            MainTStrip.Items.Add(aboutButton); // Add the menu option
+
+            #endregion
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
@@ -27,152 +244,14 @@ namespace Slinky_RTM
             // Check if CTRL + W is pressed
             if (e.Control && e.KeyCode == Keys.W)
             {
-                // Close the application
                 Application.Exit();
             }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Colorize the logo to bright orange (255, 165, 0)
-            ColorizeLogo(Color.FromArgb(255, 165, 0));
-        }
-        #endregion
-
-        #region PS3 Connection
-        private void ConnectBtn_Click_1(object sender, EventArgs e)
-        {
-            if (PS3.GetCurrentAPI() == SelectAPI.ControlConsole)
-            {
-                try
-                {
-                    MainForm.PS3.ConnectTarget(this.IPtextBox.Text);
-                    this.ConnectionStatusLbl.Text = "Connected";
-                    this.ConnectionStatusLbl.ForeColor = Color.Green;
-                    IsConnected = true;
-                }
-                catch
-                {
-                    this.ConnectionStatusLbl.Text = "Not connected";
-                    this.ConnectionStatusLbl.ForeColor = Color.Red;
-                }
-            }
-            else if (PS3.GetCurrentAPI() == SelectAPI.TargetManager)
-            {
-                try
-                {
-                    MainForm.PS3.ConnectTarget();
-                    this.ConnectionStatusLbl.Text = "Connected";
-                    this.ConnectionStatusLbl.ForeColor = Color.Green;
-                    IsConnected = true;
-                }
-                catch
-                {
-                    this.ConnectionStatusLbl.Text = "Not connected";
-                    this.ConnectionStatusLbl.ForeColor = Color.Red;
-                }
-            }
-            else if (PS3.GetCurrentAPI() == SelectAPI.PS3Manager)
-            {
-                try
-                {
-                    PS3M_API.ConnectTarget(this.IPtextBox.Text, Convert.ToInt32(7887));
-                    if (PS3M_API.IsConnected)
-                        foreach (uint pidProcess in MainForm.PS3M_API.Process.GetPidProcesses())
-                        {
-                            if (pidProcess != 0U)
-                            {
-                                PS3M_API.Process.GetName(pidProcess);
-                            }
-                        }
-                    this.ConnectionStatusLbl.Text = "Connected";
-                    this.ConnectionStatusLbl.ForeColor = Color.Green;
-                    IsConnected = true;
-                }
-                catch
-                {
-                    this.ConnectionStatusLbl.Text = "Not connected";
-                    this.ConnectionStatusLbl.ForeColor = Color.Red;
-                }
-            }
-        }
-
-        private void AttachBtn_Click_1(object sender, EventArgs e)
-        {
-            if (PS3.GetCurrentAPI() == SelectAPI.ControlConsole || PS3.GetCurrentAPI() == SelectAPI.TargetManager)
-            {
-                try
-                {
-                    PS3.AttachProcess();
-                    this.ConnectionStatusLbl.Text = "Connected + Attached";
-                    this.ConnectionStatusLbl.ForeColor = Color.Green;
-                }
-                catch
-                {
-                    this.ConnectionStatusLbl.Text = "Not attached";
-                    this.ConnectionStatusLbl.ForeColor = Color.Red;
-                }
-            }
-            else if (PS3.GetCurrentAPI() == SelectAPI.PS3Manager)
-            {
-                try
-                {
-                    MainForm.PS3M_API.AttachProcess(MainForm.PS3M_API.Process.Processes_Pid[0]);
-                    if (MainForm.PS3M_API.IsAttached)
-                    {
-                        //mods
-                        this.ConnectionStatusLbl.Text = "Connected + Attached";
-                        this.ConnectionStatusLbl.ForeColor = Color.Green;
-                    }
-                }
-                catch
-                {
-                    this.ConnectionStatusLbl.Text = "Not attached";
-                    this.ConnectionStatusLbl.ForeColor = Color.Red;
-                }
-            }
-        }
-
-        private void APISelectorComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selectedOption = APISelectorComboBox.SelectedItem.ToString();
-
-            // Do something based on the selected option
-            switch (selectedOption)
-            {
-                case "Target Manager API":
-                    // Handles TMAPI
-                    PS3.ChangeAPI(SelectAPI.TargetManager);
-                    MessageBox.Show("Target Manager API for DEX PS3 Systems has been selected!");
-                    break;
-                case "Control Console API":
-                    // Handles CCAPI
-                    PS3.ChangeAPI(SelectAPI.ControlConsole);
-                    MessageBox.Show("Control Console API for CFW PS3 Systems has been selected!");
-                    break;
-                case "PS3 Manager API":
-                    // Handles PS3 Manager API
-                    PS3.ChangeAPI(SelectAPI.PS3Manager);
-                    MessageBox.Show("PS3 Manager API for HEN PS3 Systems has been selected!");
-                    break;
-                default:
-                    // Handle any other case (if needed)
-                    break;
-            }
-        }
-
-        #endregion
-
-        #region Ready Checkbox
-        // The functionality for the ready checkbox. It enalbes / disables the tabs.
-        private void ReadyCBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (ReadyCBox.Checked == true)
-            {
-                ModTabControl.Enabled = true;
-            }
-            else
-                ModTabControl.Enabled = false;
+            // Colorize the logo to Ultramarine Blue
+            ColorizeLogo(Color.FromArgb(65, 102, 245));
         }
         #endregion
 
@@ -190,12 +269,12 @@ namespace Slinky_RTM
             {
                 // Set the color map
                 ColorMap[] colorMap = {
-            new ColorMap
-            {
-                OldColor = Color.Black,
-                NewColor = color
-            }
-        };
+                    new ColorMap
+                    {
+                        OldColor = Color.Black,
+                        NewColor = color
+                    }
+                };
 
                 // Create an ImageAttributes object and set the color map
                 ImageAttributes imageAttributes = new ImageAttributes();
@@ -211,7 +290,6 @@ namespace Slinky_RTM
             // Set the PictureBox's Image to the new colorized image
             SlinkyLogoPictureBox.Image = newImage;
         }
-
         #endregion
 
         #region Mods
@@ -233,7 +311,7 @@ namespace Slinky_RTM
             }
         }
 
-        // Credit to MayhemModding for finding this and also credit to LordVirus/Trent for helping with setting this portion of the code up.
+        // Credit to MayhemModding for finding this and also credit to LordVirus/Natasha for helping with setting this up.
         private void CanFly
         (
             bool enable, // This might be to just allow this user to double tab jump to toggle fly?
@@ -1014,20 +1092,36 @@ namespace Slinky_RTM
             }
         }
 
-        private void BigHitCBox_CheckedChanged(object sender, EventArgs e)
+        private void AutoSprintCBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.BigHitCBox.Checked)
+            const uint AccelScalarAddr = 0x002D1994; // flt_2D1994: 0.16277136 // new super speed :3
+
+            if (this.AutoSprintCBox.Checked)
             {
-                PS3.Extension.WriteBytes(0x002CD238, new byte[4]
+                // 0.25f to 3E 80 00 00
+                PS3.Extension.WriteBytes(AccelScalarAddr, new byte[4]
                 {
-                    0x3F, 0x80, 0x00, 0x00
+                    0x3E, 0x8A, 0xED, 0x71
+                });
+
+                // Sprinting FOV effect
+                PS3.Extension.WriteBytes(0x004FCBA8, new byte[8]
+{
+                    0x3F, 0x80, 0x00, 0x00, 0x3D, 0x4C, 0xCC, 0xCD
                 });
             }
             else
             {
-                PS3.Extension.WriteBytes(0x002CD238, new byte[4]
+                // Restore default 0.16277136f to 3E 26 AD 89
+                PS3.Extension.WriteBytes(AccelScalarAddr, new byte[4]
                 {
-                    0x3F, 0x00, 0x00, 0x00
+                    0x3E, 0x26, 0xAD, 0x89
+                });
+
+                // Restore default FOV
+                PS3.Extension.WriteBytes(0x004FCBA8, new byte[8]
+{
+                    0x3F, 0x00, 0x00, 0x00, 0x3D, 0x4C, 0xCC, 0xCD
                 });
             }
         }
@@ -1106,7 +1200,7 @@ namespace Slinky_RTM
 
         private void FasterMiningCBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (this.PVPFOVCBox.Checked)
+            if (this.FasterMiningCBox.Checked)
             {
                 PS3.Extension.WriteBytes(0x00733C38, new byte[4]
                 {
@@ -1642,37 +1736,70 @@ namespace Slinky_RTM
                 });
             }
         }
-        #endregion
 
-        #region Messages
-        private void AboutBtn_Click(object sender, EventArgs e)
+        private void WalkingSpeedTRKBar_Scroll(object sender, EventArgs e)
         {
-            string message = ("Slinky RTM Tool\n\nThe Slinky RTM Tool is a powerful real-time modding / real-time editing tool made for Minecraft PS3 Edition versions 1.20 - 1.28. The tool is open-source and can be found on GitHub.\n\nTool version: 1.2.0 (Build #12000A)\n\nCredits:\nDeveloper: EternalModz\nHelper: MayhemModding\nHelper: LordVirus (Trent)\nOffset Credits: SirJakey\nOffset Credits: Eddie Mac / NeverSwitchUp\n\nTool created for: Seve");
-            MessageBox.Show(message, "About", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            const uint AccelScalarAddr = 0x002D1994; // flt_2D1994
+
+            // Safe range
+            const float minSpeed = 0.16277136f; // default
+            const float maxSpeed = 3.00f; // max (any amount faster)
+
+            // Normalize slider (0.0 > 1.0)
+            float t = (float)WalkingSpeedTRKBar.Value / WalkingSpeedTRKBar.Maximum;
+
+            // Interpolate
+            float speed = minSpeed + (t * (maxSpeed - minSpeed));
+
+            // Convert float to bytes
+            byte[] bytes = BitConverter.GetBytes(speed);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(bytes);
+
+            // Write
+            PS3.Extension.WriteBytes(AccelScalarAddr, bytes);
         }
 
-        private void HowToUseCBoxsBtn_Click(object sender, EventArgs e)
+        private void InstantMineCBox_CheckedChanged(object sender, EventArgs e)
         {
-            // Print out a message to tell the user how the mods work in the comboboxes
-            string message = "Mod Amplifier\n\n" +
-                             "X1   =  1\n" +
-                             "X2   =  2\n" +
-                             "X3   =  3\n" +
-                             "X4   =  4\n" +
-                             "X5   =  5\n" +
-                             "X6   =  6\n" +
-                             "X7   =  7\n" +
-                             "X8   =  8\n" +
-                             "X9   =  9\n" +
-                             "XAA  = 170\n" +
-                             "XBB  = 187\n" +
-                             "XCC  = 204\n" +
-                             "XDD  = 221\n" +
-                             "XEE  = 238\n" +
-                             "XFF  = 255" +
-                             "\n\nHigher values make the mods more powerful.";
+            if (this.InstantMineCBox.Checked)
+            {
+                // Reduce delay multipliers
+                PS3.Extension.WriteBytes(0x00733C38, new byte[4] { 0x3D, 0xCC, 0xCC, 0xCD }); // 0.1f
+                PS3.Extension.WriteBytes(0x00733C3C, new byte[4] { 0x3C, 0x23, 0xD7, 0x0A }); // 0.01f
+                PS3.Extension.WriteBytes(0x00733C40, new byte[4] { 0x3C, 0x23, 0xD7, 0x0A }); // 0.01f
 
-            MessageBox.Show(message, "Mod Amplifier Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Maximize damage scaler or hardness bypass
+                PS3.Extension.WriteBytes(0x00733C44, new byte[4] { 0x46, 0x1C, 0x40, 0x00 }); // 10000.0f
+            }
+            else
+            {
+                // Restore defaults
+                PS3.Extension.WriteBytes(0x00733C38, new byte[4] { 0x3F, 0x80, 0x00, 0x00 }); // 1.0f
+                PS3.Extension.WriteBytes(0x00733C3C, new byte[4] { 0x3F, 0x00, 0x00, 0x00 }); // 0.5f
+                PS3.Extension.WriteBytes(0x00733C40, new byte[4] { 0x3E, 0x00, 0x00, 0x00 }); // 0.125f
+                PS3.Extension.WriteBytes(0x00733C44, new byte[4] { 0x41, 0x20, 0x00, 0x00 }); // 10.0f
+            }
+        }
+
+        private void HauntedCBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // After trying to extend the fast hit mod, I managed to create whatever this is.
+            // This makes it night forever, enables a broken version of fast hitting, and breaks creative fly mechanics.
+            if (this.HauntedCBox.Checked)
+            {
+                PS3.Extension.WriteBytes(0x011C8828, new byte[4]
+                {
+                    0x3C, 0x23, 0xD7, 0x0A
+                });
+            }
+            else
+            {
+                PS3.Extension.WriteBytes(0x011C8828, new byte[4]
+                {
+                    0x3F, 0x00, 0x00, 0x00
+                });
+            }
         }
         #endregion
 
@@ -1702,10 +1829,78 @@ namespace Slinky_RTM
         }
         #endregion
 
-        #region Misc
+        #region Misc.
         private void toolStripStatusLabel3_Click(object sender, EventArgs e)
         {
+            // Not used for the time being.
+        }
 
+        private void ReadyCBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ReadyCBox.Checked)
+            {
+                // Enable the currently disabled controls on the form
+                // Group boxes
+                this.GameVisualsGBox.Enabled = true;
+                this.PlayerModsGBox.Enabled = true;
+
+                // Combo boxes
+                this.BigHitComboBox.Enabled = true;
+                this.FOVComboBox.Enabled = true;
+                this.InfiniteResourcesComboBox.Enabled = true;
+                this.SkyBrightnessComboBox.Enabled = true;
+                this.SuperSpeedComboBox.Enabled = true;
+                this.TimeOfDayComboBox.Enabled = true;
+                this.ZoomComboBox.Enabled = true;
+                this.ZoomV2ComboBox.Enabled = true;
+
+                // Button
+                this.HowItWorksBtn.Enabled = true;
+            }
+            else
+            {
+                // Disable the currently disabled controls on the form
+                // Group boxes
+                this.GameVisualsGBox.Enabled = false;
+                this.PlayerModsGBox.Enabled = false;
+
+                // Combo boxes
+                this.BigHitComboBox.Enabled = false;
+                this.FOVComboBox.Enabled = false;
+                this.InfiniteResourcesComboBox.Enabled = false;
+                this.SkyBrightnessComboBox.Enabled = false;
+                this.SuperSpeedComboBox.Enabled = false;
+                this.TimeOfDayComboBox.Enabled = false;
+                this.ZoomComboBox.Enabled = false;
+                this.ZoomV2ComboBox.Enabled = false;
+
+                // Button
+                this.HowItWorksBtn.Enabled = false;
+            }
+        }
+
+        private void HowItWorksBtn_Click(object sender, EventArgs e)
+        {
+            // Print out a message to tell the user how the mods work in the comboboxes
+            string message = "Mod Amplifier\n\n" +
+                             "X1   =  1\n" +
+                             "X2   =  2\n" +
+                             "X3   =  3\n" +
+                             "X4   =  4\n" +
+                             "X5   =  5\n" +
+                             "X6   =  6\n" +
+                             "X7   =  7\n" +
+                             "X8   =  8\n" +
+                             "X9   =  9\n" +
+                             "XAA  = 170\n" +
+                             "XBB  = 187\n" +
+                             "XCC  = 204\n" +
+                             "XDD  = 221\n" +
+                             "XEE  = 238\n" +
+                             "XFF  = 255" +
+                             "\n\nHigher values make the mods more powerful.";
+
+            MessageBox.Show(message, "Mod Amplifier Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
     }
