@@ -215,7 +215,7 @@ namespace Slinky_RTM.UI
                 string message =
                     "Slinky RTM Tool\n\n" +
                     "Slinky is an RTM Tool with powerful RTM/RTE capabilities " +
-                    "made for Minecraft PoaySStation 3 Edition versions 1.20-1.28. " +
+                    "made for Minecraft PlaySStation 3 Edition versions 1.20-1.28. " +
                     "This project is open-source and can be found on GitHub.\n\n" +
                     "Tool version: 2.0.0 (Build #011226A)\n\n" +
                     "Credits:\n" +
